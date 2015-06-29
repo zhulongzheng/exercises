@@ -4,14 +4,14 @@ var debounce = function(fn, timeSpace) {
 
       return function() {
         var realArg = [].slice.call(arguments)
-          , innerNow = new Date()
-          , timePassed = innerNow - start
+          , eachNow = new Date()
+          , timePassed = eachNow - start
           , innerThis = this
 
         if (timePassed > timeSpace) {
           clearTimeout(timer)
           fn.apply(innerThis, realArg)
-          start = innerNow
+          start = eachNow
         } else {
           clearTimeout(timer)
           timer = setTimeout(function() {
