@@ -2,6 +2,8 @@
 
 These are some basic (and advanced) coding challenges
 
+> Checkout 2hu's solution by switching to branch `2hu`
+
 Here's the basic workflow:
 
 ```bash
