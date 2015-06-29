@@ -13,17 +13,17 @@ var throttle = function(fn, timeSpace) {
           fn.apply(innerThis, realArg)
           first = false
           lastStart = eachNow
-          // lastStart = (new Date())
-        } else if (timePassed < timeSpace) {
+        } else if (timePassed > timeSpace) {
+          clearTimeout(timer)
+          fn.apply(innerThis, realArg)
+          lastStart = eachNow
+        } else {
           clearTimeout(timer)
           timer = setTimeout(function() {
             fn.apply(innerThis, realArg)
             lastStart = new Date()
-          }, timeSpace - timePassed)
-        } else {
-          clearTimeout(timer)
-          fn.apply(innerThis, realArg)
-          lastStart = eachNow
+            clearTimeout(timer)
+          }, timeSpace - timePassed + 1) // hacky?
         }
       }
     }
