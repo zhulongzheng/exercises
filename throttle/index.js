@@ -21,9 +21,9 @@ var throttle = function(fn, timeSpace) {
             lastStart = new Date()
           }, timeSpace - timePassed)
         } else {
+          clearTimeout(timer)
           fn.apply(innerThis, realArg)
           lastStart = eachNow
-          clearTimeout(timer)
         }
       }
     }
