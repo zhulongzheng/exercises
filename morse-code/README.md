@@ -9,8 +9,8 @@ A couple of things to know:
 1. dot duration is the baseline timing measurement
 2. dashes are timed as 3 dots
 3. time between each dot or dash in the same letter is 1 dot
-3. time between letters are 3 dots
-4. time between words are 7 dots
+4. time between letters are 3 dots
+5. time between words are 7 dots
 
 Here's a pretty timeline graph of the string "so so":
 
