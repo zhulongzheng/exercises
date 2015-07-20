@@ -29,7 +29,7 @@ describe('throttle-promises', function() {
       arr.push(asyncFactory);
     }
 
-    throttlePromises(5, arr).then(function(results) {
+    throttlePromises(limit, arr).then(function(results) {
       var expectedResults = Array(101).join('.').split('').map(function(dot, index) {
         return index + '!';
       });
@@ -44,5 +44,46 @@ describe('throttle-promises', function() {
     });
 
 
+  });
+  it("will run when `limit` is larger than length of promise array", function(done) {
+    var passed = true;
+    var limit = 100;
+    var currentlyExecuting = 0;
+    var currentlyExecutingHistory = [currentlyExecuting];
+    var nextValue = 0;
+    var asyncFactory = function() {
+      return new Promise(function(resolve) {
+        var resolveWith = nextValue++;
+        currentlyExecuting++;
+        currentlyExecutingHistory.push(currentlyExecuting);
+        if (currentlyExecuting > limit) {
+          passed = false;
+        }
+        setTimeout(function() {
+          resolve(resolveWith + '!');
+          currentlyExecuting--;
+          currentlyExecutingHistory.push(currentlyExecuting);
+        }, Math.random() * 100);
+      });
+    };
+
+    var arr = [];
+    for (var i = 0; i < 100; i++) {
+      arr.push(asyncFactory);
+    }
+
+    throttlePromises(limit + 1, arr).then(function(results) {
+      var expectedResults = Array(101).join('.').split('').map(function(dot, index) {
+        return index + '!';
+      });
+      var expectedHistory = Array(202).join('.').split('').map(function(dot, index) {
+        return index <= 100 ? index : 200 - index;
+      });
+
+      assert(passed, 'more than ' + limit + ' promises ran in parallel');
+      assert.deepEqual(results, expectedResults);
+      assert.deepEqual(currentlyExecutingHistory, expectedHistory);
+      done();
+    });
   });
 });
